@@ -1,14 +1,9 @@
 <?php
 
-// $servername = "localhost";
-// $username = "root";
-// $password = "";
-// $dbname = "domandb";
-
-$servername = "fdb32.awardspace.net";
-$username = "4106934_domandb";
-$password = "1j3a3i8r2O.";
-$dbname = "4106934_domandb";
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "domandb";
 
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 
