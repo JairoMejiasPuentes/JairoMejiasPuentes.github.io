@@ -95,7 +95,7 @@ function play(nr){
 }
 
 // creación del login dinámicamnete
-function showLogin(){
+function showLogin(method){
     $.getJSON('js/lang.json',function(json){
         if(!localStorage.getItem("lang")){
             localStorage.setItem("lang", "es")
@@ -153,6 +153,7 @@ $.getJSON('js/lang.json',function(json){
     });
     
 });
+
 /* Petición ajax para obtener todos los bloques quee tenemos almacenados en base de datos*/
 function showAllBlocks(method){
     $('contenedor-slider').hide()
@@ -208,29 +209,23 @@ function showElementsOfBlock(method, idBlock , description){
 
 /* Función para enviar emails de contacto mediante AJAX*/
 function sendMail(method){
-    let name = document.getElementById('fname')
-    let surname = document.getElementById('lname')
-    let address = document.getElementById('address')
-    let mail = document.getElementById('email')
-    let phoneNumber = document.getElementById('phoneNumber')
 
-    let ajaxObj = new XMLHttpRequest();
-    let params = "method=" + method +"&to="+ mail.value +"&name="+ name.value +"&surname="+surname.value+"&address="+address.value+"&phoneNumber="+phoneNumber.value;
-    ajaxObj.open("POST", "data.php", true);
-    ajaxObj.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    ajaxObj.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            if (this.responseText) {
-                alert('el correo se ha enviado correctamente');
-                name.value = "";
-                surname.value = "";
-                address.value = "";
-                mail.value = "";
-                phoneNumber.value = "";
-            }
+    let name = $('#fname').val()
+    let surname = $('#lname').val()
+    let address = $('#address').val()
+    let mail = $('#email').val()
+    let phoneNumber = $('#phoneNumber').val()
+    
+    $.ajax({
+        url:'./data.php',
+        type:'POST',
+        data: {'method': method, 'to': mail , 'name': name, 'surname':surname, 'address':address , 'phoneNumber':phoneNumber},
+        dataType:'json',
+        success: ()=> {
+            alert('Se ha enviado el correo Correctamente')
+            $("#contactForm")[0].reset();  
         }
-    }
-    ajaxObj.send(params);
+    });
 }
     
 

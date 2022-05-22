@@ -20,7 +20,7 @@ if (isset($_REQUEST['method'])) {
         case "showElementsOfBlock";
             echo json_encode(showElementsOfBlock());
             break;
-        case "patata";
+        case "sendMail";
             echo sendMail();
             break;
     }

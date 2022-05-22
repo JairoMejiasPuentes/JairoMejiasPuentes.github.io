@@ -58,7 +58,7 @@
             </div>
             <fieldset>
                 <legend class="lang" key="fieldset-form" ><span>contactanos</span></legend>
-                <form onsubmit='sendMail("patata"); return false'>
+                <form id="contactForm" onsubmit='sendMail("sendMail"); return false'>
                     <div class="grid">
                         <div class="personal-data" ><label class="lang" key="name" for="fname">nombre </label> <br>
                             <input type="text" name="fname" id="fname" autocomplete="name" required><br>
