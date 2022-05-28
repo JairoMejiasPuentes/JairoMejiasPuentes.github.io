@@ -5,6 +5,7 @@ let interval = "";
 
 $(document).ready(function() {
     main();
+    changeLanguage()
 });
 
 function showNav() {
@@ -20,19 +21,19 @@ function main(){
     // establecemos aqui el local Storage para que se mantenga la opcion del idioma aunque lo recarguemos
     htmlLang = localStorage.getItem("lang");
 
-    $('#btn-play').click(()=>{
+    $('#btn-play').on("click",()=>{
         setTimeout(()=>{$('#slider').css('margin-left', ''+0+'%')},5000);
         autoplayScroll();
     });
 
-    $('#btn-back').click(()=>{
+    $('#btn-back').on("click",()=>{
         window.location.href = './main.php';
     });
      
     // este lo anima para hacer un menú dropdown en la vista pc
     let counterLang = 0
 
-    $('.dropbtn').click(()=> {
+    $('.dropbtn').on("click",()=> {
         counterLang = 1;
         console.log(counterLang);
         $('.dropdown-content').css({
@@ -45,12 +46,12 @@ function main(){
             $('.dropdown-content').css("display", "none");
         });
         if(counterLang == 1){
-            $('.dropdropbtn').click(()=> {
+            $('.dropdropbtn').on("click",()=> {
                 console.log(counterLang);
                 counterLang=0
                 $('.dropdown-content').css("display", "none");
             });
-            $('.dropdown-content').click(()=> { 
+            $('.dropdown-content').on("click",()=> { 
                 $('.dropdown-content').css("display", "none");
             });
         }
@@ -90,35 +91,13 @@ function autoplayScroll() {
 // funcion para ejecutar el sonido asociado a cada una de las imagenes, 
 // lo hago en vanilla Javascript, ya que jquery no tiene esa característica
 function play(nr){
-    var audio = document.getElementById("audio-"+nr);
+    let audio = $("#audio-"+nr)[0];
     audio.play(); 
 }
 
 // creación del login dinámicamnete
 function showLogin(method){
-    $.getJSON('js/lang.json',function(json){
-        if(!localStorage.getItem("lang")){
-            localStorage.setItem("lang", "es")
-        }
-    
-        //  utilizamos el localstorage para guardar la variable lang y así al recargar la págiuna que se
-        //  quede en el idioma que estaba. Por defecto aparecerá en Castellano
-    
-        let def = localStorage.getItem("lang");
-        $('.lang').each((index, value)=> { 
-            $(this).text(json[def][$(this).attr('key')]);             
-        });
-    
-        $('.translate').click(()=> {
-            let language = $(this).attr("id");
-            localStorage.setItem("lang", language)
-            $('.lang').each(function(index, value) { 
-                $(this).text(json[language][$(this).attr('key')]); 
-                           
-            });
-        });
-    
-    });
+    changeLanguage()
     $("section").children().remove();
     $("#index").removeClass('active');
     $("#contact").removeClass('active');
@@ -131,28 +110,31 @@ function showLogin(method){
 /*  método de obtención de los idiomas mediante un archivo JSON
     creamos una funcion de validación para cada uno de los campos de Json*/
 
-$.getJSON('js/lang.json',function(json){
-    if(!localStorage.getItem("lang")){
-        localStorage.setItem("lang", "es")
-    }
-
-    /*  utilizamos el localstorage para guardar la variable lang y así al recargar la página que se
-        quede en el idioma que estaba. Por defecto aparecerá en Castellano*/
-
-    let def = localStorage.getItem("lang");
-    $('.lang').each(function(index, value) { 
-        $(this).text(json[def][$(this).attr('key')]);             
-    });
+function changeLanguage(){
+    $.getJSON('js/lang.json',function(json){
+        if(!localStorage.getItem("lang")){
+            localStorage.setItem("lang", "es")
+        }
     
-    $('.translate').click(function() {
-        let language = $(this).attr("id");
-        localStorage.setItem("lang", language)
+        /*  utilizamos el localstorage para guardar la variable lang y así al recargar la página que se
+            quede en el idioma que estaba. Por defecto aparecerá en Castellano*/
+    
+        let def = localStorage.getItem("lang");
         $('.lang').each(function(index, value) { 
-            $(this).text(json[language][$(this).attr('key')]);           
+            $(this).text(json[def][$(this).attr('key')]);             
         });
+        
+        $('.translate').on("click",function() {
+            let language = $(this).attr("id");
+            console.log("este es el lenguaje "+ language);
+            localStorage.setItem("lang", language)
+            $('.lang').each(function(index, value) { 
+                $(this).text(json[language][$(this).attr('key')]);           
+            });
+        });
+        
     });
-    
-});
+}
 
 /* Petición ajax para obtener todos los bloques quee tenemos almacenados en base de datos*/
 function showAllBlocks(method){
